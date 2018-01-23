@@ -38,15 +38,15 @@ lazy val `launaskil-codegen` =
     .settings(
       name := "scala-db-codegen",
       organization := "com.geirsson",
-      scalaVersion := "2.11.8",
+      scalaVersion := "2.12.4",
       version := com.geirsson.codegen.Versions.nightly,
       packMain := Map("scala-db-codegen" -> "com.geirsson.codegen.Codegen"),
       libraryDependencies ++= Seq(
-        "com.geirsson" %% "scalafmt-core" % "0.3.0",
-        "io.getquill" %% "quill-core" % "0.8.0",
+        "com.geirsson" %% "scalafmt-core" % "1.4.0",
+        "io.getquill" %% "quill-core" % "2.3.2",
         "com.h2database" % "h2" % "1.4.192",
         "org.postgresql" % "postgresql" % "9.4-1201-jdbc41",
-        "com.github.alexarchambault" %% "case-app" % "1.0.0-RC3",
+        "com.github.alexarchambault" %% "case-app" % "1.1.3",
         "org.scalatest" %% "scalatest" % "3.0.0" % "test"
       )
     )

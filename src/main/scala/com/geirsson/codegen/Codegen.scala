@@ -12,9 +12,9 @@ import caseapp.AppOf
 import caseapp._
 import com.typesafe.scalalogging.Logger
 import io.getquill.NamingStrategy
-import org.scalafmt.FormatResult
+import org.scalafmt.Formatted
 import org.scalafmt.Scalafmt
-import org.scalafmt.ScalafmtStyle
+import org.scalafmt.config.ScalafmtConfig
 
 case class Error(msg: String) extends Exception(msg)
 
@@ -29,7 +29,7 @@ case class CodegenOptions(
     @HelpMessage("only tested with postgresql") jdbcDriver: String = "org.postgresql.Driver",
     @HelpMessage(
       "top level imports of generated file"
-    ) imports: String = """import io.getquill.WrappedValue""",
+    ) imports: String = """import io.getquill._""",
     @HelpMessage(
       "package name for generated classes"
     ) `package`: String = "tables",
@@ -178,7 +178,7 @@ case class Codegen(options: CodegenOptions, namingStrategy: NamingStrategy) {
     def toSimple = references.getOrElse(SimpleColumn(tableName, columnName))
 
     def toClass: String = {
-      s"case class ${namingStrategy.table(columnName)}(value: $scalaType) extends AnyVal with WrappedValue[$scalaType]"
+      s"case class ${namingStrategy.table(columnName)}(value: $scalaType) extends AnyVal"
     }
   }
 
@@ -273,9 +273,9 @@ object Codegen extends AppOf[CodegenOptions] {
     val tables = codegen.getTables(db, foreignKeys)
     val generatedCode =
       codegen.tables2code(tables, SnakeCaseReverse, codegenOptions)
-    val codeStyle = ScalafmtStyle.defaultWithAlign.copy(maxColumn = 120)
+    val codeStyle = ScalafmtConfig.defaultWithAlign.copy(maxColumn = 120)
     val code = Scalafmt.format(generatedCode, style = codeStyle) match {
-      case FormatResult.Success(x) => x
+      case Formatted.Success(x) => x
       case _ => generatedCode
     }
     codegenOptions.file match {

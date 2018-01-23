@@ -2,7 +2,7 @@ package com.geirsson.codegen
 
 import scala.util.control.NonFatal
 
-import caseapp.core.ArgParser
+import caseapp.core.{ArgParser}
 
 object TypeMap {
   implicit val parser: ArgParser[TypeMap] =
